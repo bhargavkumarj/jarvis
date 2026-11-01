@@ -1,0 +1,15 @@
+// Request mocks only; owner RLS/migration evidence remains in the deferred DB suite.
+import {beforeEach,it,expect,vi} from 'vitest';
+const h=vi.hoisted(()=>({account:vi.fn(),update:vi.fn(),eq:vi.fn(),single:vi.fn(),owner:crypto.randomUUID()}));
+vi.mock('server-only',()=>({}));
+vi.mock('../../src/lib/conversation/api',async()=>({...await vi.importActual<typeof import('../../src/lib/conversation/api')>('../../src/lib/conversation/api'),accountFor:h.account}));
+import {POST} from '../../src/app/api/v1/onboarding/route';
+import {ContentError} from '../../src/lib/conversation/api';
+const prefs={display_name:'Synthetic',assistant_name:'Pip',tone:'concise',timezone:'Asia/Kolkata',locale:'en-IN'};
+function req(body:unknown,query=''){return new Request('http://127.0.0.1:3000/api/v1/onboarding'+query,{method:'POST',headers:{Origin:'http://127.0.0.1:3000','Content-Type':'application/json'},body:JSON.stringify(body)});}
+beforeEach(()=>{vi.clearAllMocks();h.account.mockResolvedValue({profile:{owner_id:h.owner},client:{from:(name:string)=>{expect(name).toBe('profiles');return {update:h.update};}}});h.update.mockReturnValue({eq:h.eq});h.eq.mockReturnValue({select:()=>({single:h.single})});h.single.mockResolvedValue({data:{...prefs,owner_id:h.owner},error:null});});
+it('requires a verified mutation boundary and never accepts a supplied owner',async()=>{h.account.mockRejectedValue(new ContentError(401,'Session ended'));expect((await POST(req({action:'skip'}))).status).toBe(401);expect(h.update).not.toHaveBeenCalled();expect(h.account.mock.calls[0][1]).toBe(true);});
+it('atomically updates only owned preferences and completion using the ordinary client',async()=>{const r=await POST(req({action:'complete',preferences:prefs}));expect(r.status).toBe(200);expect(h.eq).toHaveBeenCalledWith('owner_id',h.owner);expect(h.update.mock.calls[0][0]).toMatchObject(prefs);expect(h.update.mock.calls[0][0].onboarding_completed_at).toMatch(/^\d{4}-/);expect((await r.json()).redirect).toBe('/assistant');});
+it('skip changes no preference or consent value',async()=>{expect((await POST(req({action:'skip'}))).status).toBe(200);expect(Object.keys(h.update.mock.calls[0][0])).toEqual(['onboarding_completed_at']);});
+it.each([{action:'complete',preferences:{...prefs,owner_id:'foreign'}},{action:'skip',text_cloud:true},{action:'complete',preferences:{...prefs,timezone:'Mars/Olympus'}},{action:'complete',preferences:{...prefs,assistant_name:''}}])('rejects invalid or authority-bearing setup without writes: %j',async body=>{expect((await POST(req(body))).status).toBe(422);expect(h.update).not.toHaveBeenCalled();});
+it('filters and missing migration errors cannot produce a success receipt or expose driver detail',async()=>{expect((await POST(req({action:'skip'},'?owner_id=foreign'))).status).toBe(422);h.single.mockResolvedValue({data:null,error:{code:'PGRST204',message:'SECRET'}});const r=await POST(req({action:'skip'}));expect(r.status).toBe(503);const d=await r.json();expect(d.redirect).toBeUndefined();expect(d.error).toContain('migration');expect(d.error).not.toContain('SECRET');});

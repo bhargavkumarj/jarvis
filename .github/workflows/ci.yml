@@ -1,0 +1,43 @@
+name: Foundation checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: foundation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      DO_NOT_TRACK: '1'
+      JARVIS_MOCK_ONLY: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm db:start
+      # Fresh hosted runner/container volumes prove reconstruction without
+      # resetting a retained developer database. Tests create their own aliases.
+      - run: pnpm local:setup
+      - run: pnpm test:integration
+      - run: pnpm worker:setup
+      - run: pnpm test:worker
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - if: always()
+        run: pnpm db:stop
+      # No traces, screenshots, auth state, email bodies, .env or fixture artifacts uploaded.

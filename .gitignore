@@ -1,0 +1,33 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.env*
+!.env.example
+.local/
+.pnpm-store/
+supabase/.temp/
+supabase/.branches/
+*.tsbuildinfo
+.DS_Store
+package-lock.json
+# User-provided debugging screenshots may contain addresses or one-time codes.
+Screenshot*.png
+Screenshot*.jpg
+Screenshot*.jpeg
+
+# Voice captures and local diagnostic media are never source artifacts.
+recordings/
+*.wav
+*.webm
+*.m4a
+*.mp4
+*.mp3
+*.ogg
+
+# User exports are private local artifacts, never source.
+exports/
+jarvis-export-*.json
+*.export.json

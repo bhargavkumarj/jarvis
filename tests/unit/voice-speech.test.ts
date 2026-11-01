@@ -1,0 +1,12 @@
+import {afterEach,it,expect,vi} from 'vitest';
+import {localVoice,speechText,browserSpeech,type LocalVoice} from '../../src/lib/voice/speech';
+const voice=(localService:boolean,lang='en-IN'):LocalVoice=>({voiceURI:crypto.randomUUID(),name:'Synthetic',lang,localService,default:false});
+afterEach(()=>vi.unstubAllGlobals());
+it('never selects remote/default voices and requires a suitable local language',()=>{const remote=voice(false),local=voice(true);expect(localVoice([remote,local],'en-IN')).toBe(local);expect(localVoice([remote],'en')).toBeNull();expect(localVoice([voice(true,'fr-FR')],'en')).toBeNull();});
+it('handles late empty lists and then local voice availability',()=>{expect(localVoice([])).toBeNull();expect(localVoice([voice(true,'en-GB')])).not.toBeNull();});
+it('reads bounded accessible text without raw markdown, URLs or code blocks',()=>{const result=speechText('# Reply\n[Learn](https://private.example/path) **now**\n```js\nsecret();\n``` https://example.test/a `code`');expect(result.text).toContain('Learn now');expect(result.text).not.toContain('https');expect(result.text).not.toContain('secret');expect(result.text).not.toContain('**');expect(speechText('x'.repeat(3000)).truncated).toBe(true);expect(speechText('x'.repeat(3000)).text).toHaveLength(2000);});
+it('unavailable browser APIs retain text rather than calling a hidden service',()=>{vi.stubGlobal('speechSynthesis',undefined);expect(browserSpeech()).toBeNull();});
+it('stops previous speech, sets an explicitly local voice and bounds rate',()=>{
+ const speak=vi.fn(),cancel=vi.fn();vi.stubGlobal('speechSynthesis',{speak,cancel});vi.stubGlobal('SpeechSynthesisUtterance',class {constructor(public text:string){} voice:unknown;rate=1;onend:unknown;onerror:unknown;});const output=browserSpeech()!;const local=voice(true) as SpeechSynthesisVoice;output.speak('plain',local,9,vi.fn(),vi.fn());expect(cancel).toHaveBeenCalledOnce();expect(speak.mock.calls[0][0]).toMatchObject({voice:local,rate:1.2,text:'plain'});output.stop();expect(cancel).toHaveBeenCalledTimes(2);
+});
+it('rejects a remote voice even if the caller selected one and sanitizes playback failure',()=>{const speak=vi.fn();vi.stubGlobal('speechSynthesis',{speak,cancel:vi.fn()});vi.stubGlobal('SpeechSynthesisUtterance',class {});const failed=vi.fn();browserSpeech()!.speak('text',voice(false) as SpeechSynthesisVoice,1,vi.fn(),failed);expect(failed).toHaveBeenCalledOnce();expect(speak).not.toHaveBeenCalled();});

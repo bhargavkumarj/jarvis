@@ -1,0 +1,21 @@
+'use client';
+import {useRef,useState} from 'react';
+import {useHydrated} from '@/lib/use-hydrated';
+import {reminderLabels,type Reminder} from '@/lib/reminders/types';
+type Review={id:string;version:number;local_datetime:string;timezone:string;due_at:string;resolution:'unique'|'earlier'|'later'};
+export function SnoozeControls({reminder,onChanged}:{reminder:Reminder;onChanged:()=>Promise<void>}){
+ const hydrated=useHydrated(),[local,setLocal]=useState(''),[choice,setChoice]=useState(''),[review,setReview]=useState<Review|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[status,setStatus]=useState('');
+ const locked=useRef(false);
+ const key=useRef<{signature:string;id:string}|null>(null),focus=useRef<HTMLDivElement>(null);
+ async function command(body:Record<string,unknown>){if(locked.current)return null;locked.current=true;setBusy(true);setError('');try{
+  const signature=JSON.stringify(body);if(key.current?.signature!==signature)key.current={signature,id:crypto.randomUUID()};
+  const response=await fetch('/api/v1/reminders/snooze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,...(body.action==='confirm'?{request_id:key.current.id}:{})})});const data=await response.json();if(!response.ok)throw new Error(data.error);
+  key.current=null;return data;
+ }catch(e){setError(e instanceof Error?e.message:'Snooze unavailable. Refresh to inspect current state.');return null;}finally{locked.current=false;setBusy(false);}}
+ async function preview(values:Record<string,unknown>){const data=await command({action:'review',id:reminder.id,...values});if(data){setReview(data);requestAnimationFrame(()=>focus.current?.focus());}}
+ if(!['scheduling_pending','scheduled','retry_scheduled','attempt_started'].includes(reminder.state)||reminder.cancel_requested_at)return null;
+ return <div className="snooze-controls"><p>Snooze this {reminder.series_id?'occurrence only; the series stays fixed':'one-time reminder'}. Only unsent work is eligible. Presets add time to the later of now or the current scheduled time.</p><div className="button-row"><button className="button secondary" disabled={!hydrated||busy} onClick={()=>void preview({minutes:10})}>Snooze 10 minutes</button><button className="button secondary" disabled={!hydrated||busy} onClick={()=>void preview({minutes:60})}>Snooze 1 hour</button></div>
+ <form onSubmit={e=>{e.preventDefault();void preview({local_datetime:local,...(choice?{disambiguation:choice}:{})});}}><fieldset disabled={!hydrated||busy}><legend>Custom snooze for this occurrence</legend><label htmlFor={`snooze-${reminder.id}`}>Future date and time in {reminder.timezone}</label><input id={`snooze-${reminder.id}`} type="datetime-local" required value={local} onChange={e=>{setLocal(e.target.value);setReview(null);}}/><label htmlFor={`snooze-fold-${reminder.id}`}>If the time repeats</label><select id={`snooze-fold-${reminder.id}`} value={choice} onChange={e=>{setChoice(e.target.value);setReview(null);}}><option value="">Ask me to choose</option><option value="earlier">Earlier</option><option value="later">Later</option></select><button className="button secondary">Review custom snooze</button></fieldset></form>
+ {review&&<div ref={focus} tabIndex={-1} className="reminder-review" role="region" aria-label="Snooze review"><p>Snooze only this occurrence to {review.local_datetime} · {review.timezone}; UTC {review.due_at}. Version {review.version}. A recurring snooze must be strictly before the next calendar occurrence.</p><button className="button primary" disabled={!hydrated||busy} onClick={async()=>{const data=await command({action:'confirm',id:review.id,version:review.version,local_datetime:review.local_datetime,due_at:review.due_at,resolution:review.resolution});if(data){setReview(null);setStatus(`${data.replay?'Existing snooze operation':'Snooze saved'}. Current occurrence: ${reminderLabels[(data.reminder as Reminder).state]}. No new delivery is claimed.`);await onChanged().catch(()=>setError("Snooze saved. Refresh the reminder list when storage is available."));}}}>Confirm this snooze</button></div>}
+ {error&&<p role="alert" className="error-message">{error}</p>}{status&&<p aria-live="polite">{status}</p>}</div>;
+}

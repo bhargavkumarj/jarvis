@@ -1,0 +1,9 @@
+# One package; this file holds pnpm's install settings, not a monorepo.
+saveExact: true
+engineStrict: true
+storeDir: .pnpm-store
+cacheDir: .local/pnpm-cache
+allowBuilds:
+  '@tailwindcss/oxide': true
+  sharp: true
+  supabase: true
