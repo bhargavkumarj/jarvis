@@ -30,6 +30,18 @@ it('one typed SDK function call proposes memory without claiming approval or per
  const events=[];for await(const event of h.run('Please remember that I prefer concise replies.'))events.push(event);
  expect(events.find(e=>e.type==='actions')).toMatchObject({plan:{memory:{content:'Prefers concise replies.'}}});expect(h.accounts).toEqual(['dispatch','settle']);
 });
+it('a textless tool-only task proposal completes as a reviewable plan, not an incomplete answer',async()=>{
+ const task={operation:'create',reference:null,title:'Buy stamps',notes:null,deadline:null,reminder:null};
+ const h=harness([{type:'response.output_item.done',item:{type:'function_call',name:'propose_actions_v1',arguments:JSON.stringify({memory:null,reminder:null,recurrence:null,task,clarification:null})}},completed]);
+ const events:LiveEvent[]=[];for await(const event of h.run('Add a task to buy stamps'))events.push(event);
+ expect(events.map(e=>e.type)).toEqual(['usage','actions','success']);expect(events.find(e=>e.type==='actions')).toMatchObject({plan:{task,memory:null,reminder:null,clarification:null}});expect(h.accounts).toEqual(['dispatch','settle']);
+});
+it('a textless tool-only recurrence proposal completes as a reviewable plan, not an incomplete answer',async()=>{
+ const recurrence={title:'Stretch',frequency:'daily',weekdays:[],start_date:'2026-11-10',end_date:null,local_time:'08:00',timezone:'Asia/Kolkata'};
+ const h=harness([{type:'response.output_item.done',item:{type:'function_call',name:'propose_actions_v1',arguments:JSON.stringify({memory:null,reminder:null,recurrence,task:null,clarification:null})}},completed]);
+ const events:LiveEvent[]=[];for await(const event of h.run('Remind me every day at 08:00 starting 2026-11-10 to stretch'))events.push(event);
+ expect(events.map(e=>e.type)).toEqual(['usage','actions','success']);expect(events.find(e=>e.type==='actions')).toMatchObject({plan:{recurrence,memory:null,reminder:null,clarification:null}});expect(h.accounts).toEqual(['dispatch','settle']);
+});
 it('an interrupted SDK stream cannot complete an answer or refund a dispatched request',async()=>{
  const h=harness([{type:'response.output_text.delta',delta:'Partial'}]);await expect(async()=>{for await(const event of h.run())void event;}).rejects.toMatchObject({kind:'incomplete'});expect(h.accounts).toEqual(['dispatch','unknown']);
 });

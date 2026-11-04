@@ -1,6 +1,6 @@
 # JARVIS project state report
 
-Inspection date: **2026-11-01**. Repository-relative references throughout. This is a source and evidence review; no application, database, worker, Docker stack, browser suite or external service was started. No tests/builds were rerun. Only this report was created.
+Inspection date: **2026-11-01**. Repository-relative references throughout. This is a source and evidence review; no application, database, worker, Docker stack, browser suite or external service was started. No tests/builds were rerun. Only this report was created. *Amended 2026-11-05: the §7 provider defect is fixed in source (§7, §8 and STATUS.md updated). Other sections still reflect the 2026-11-01 inspection.*
 
 ## 1. Overall assessment
 
@@ -111,7 +111,7 @@ No `NEXT_PUBLIC` provider-key requirement exists in the inspected configuration.
 
 ## 7. Unresolved decisions, defects and blockers
 
-**Source-observed defect, unchanged:** `src/lib/ai/provider.ts:55` accepts textless completion only if memory, one-time reminder or clarification exists. It omits `plan.task` and `plan.recurrence`, although `src/lib/ai/contracts.ts` permits both and `src/lib/ai/orchestrate.ts` handles them. Consequently, an otherwise valid tool-only task/series response fails as incomplete after usage settlement. This follows directly from the branch; no live reproduction was attempted. Current SDK tests cover tool-only memory/clarification, leaving this boundary uncovered.
+**Source-observed defect — fixed in source 2026-11-05 (amendment to this report):** `src/lib/ai/provider.ts:55` previously accepted textless completion only if memory, one-time reminder or clarification existed, omitting `plan.task` and `plan.recurrence`, although `src/lib/ai/contracts.ts` permits both and `src/lib/ai/orchestrate.ts` handles them. An otherwise valid tool-only task/series response therefore failed as incomplete after usage settlement. Two synthetic SDK-boundary tests in `tests/unit/openai-sdk.test.ts` now cover tool-only task and recurrence responses. They failed before the one-condition fix and pass after it. Mock-only lint, typecheck and the unit suite (373 passed) were run; see `STATUS.md` (2026-11-05). No live provider reproduction or runtime/browser acceptance was performed, so the end-to-end effect remains unverified.
 
 **Known historical defect awaiting deployment proof:** operator EXECUTE on `private.m2c_channel_test_v1` was missing. Migration `202610290010_operator_channel_test.sql` narrowly repairs it. Current ACLs remain unknown; do not infer success from the repair file or broaden grants.
 
@@ -124,7 +124,7 @@ Recorded provider permissions/budget decisions already exist in `DECISIONS.md`; 
 ## 8. Recommended next three actions
 
 1. **Establish an accurate schema baseline before running the candidate.** In a separately authorized runtime session, preserve retained state, satisfy reconstruction headroom, restore the existing local stack, inspect migration history, then incrementally apply only genuinely pending files. Audit owners/ACLs/RLS/composite FKs/private delegates and `010`; regenerate/review types. Separately prove fresh disposable reconstruction and retained fingerprints. Do not reset retained data.
-2. **Resolve the identified adapter defect and execute current synthetic acceptance.** Add focused SDK-boundary coverage for tool-only task/recurrence, then run current source checks and all 109 DB/14 worker/42 browser/nine HTTPS checks. Include current privacy-cookie/export coverage and isolated finalizer failure/resume. Keep normal worker/finalizer out of fixture-owned scopes; record dated results against an identifiable source snapshot. This implementation action is recommended, not performed here.
+2. **Execute current synthetic acceptance (adapter defect resolved in source 2026-11-05).** Focused SDK-boundary coverage for tool-only task/recurrence and the fix now exist (see §7). Next, run current source checks including a production build and all 109 DB/14 worker/42 browser/nine HTTPS checks. Include current privacy-cookie/export coverage and isolated finalizer failure/resume. Keep normal worker/finalizer out of fixture-owned scopes; record dated results against an identifiable source snapshot. This implementation action is recommended, not performed here.
 3. **Qualify controlled personal use.** After synthetic gates pass, verify current provider terms/pricing/account controls, prove generic and scheduled closed-site Pushover arrival separately from acceptance, complete the capped model evaluation and integrated conversation → memory → task → reminder flow. Execute real voice/accessibility/device checks and backup/restore/deletion-replay rehearsal, then a bounded personal pilot. Remain category B until these practical gates support category C.
 
 ## 9. Files useful for an external review

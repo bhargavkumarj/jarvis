@@ -2,6 +2,18 @@
 
 Updated **2026-11-01 IST**. **Personal-version implementation candidate prepared; runtime acceptance pending.** This is the bounded finishing pass, not acceptance of M1/full M2, public launch or the long-term roadmap. No database/worker/browser/HTTPS/live/device verification completed in the finishing pass. The later read-only runtime-preflight attempt below is separately recorded. Remote CI **not run**. Manual screen-reader/real-phone checks remain **Deferred—not tested**.
 
+## Provider tool-only task/recurrence completion fix — 2026-11-05, 01:45 IST
+
+**Defect (PROJECT_STATE_REPORT §7):** `src/lib/ai/provider.ts` accepted a textless completed response only when the validated plan held memory, a one-time reminder or a clarification. A valid tool-only `plan.task` or `plan.recurrence` proposal, both allowed by `contracts.ts` and handled by `orchestrate.ts`, was rejected as `incomplete` after usage had already been settled.
+
+**Tests first:** two synthetic SDK-boundary cases were added to `tests/unit/openai-sdk.test.ts`. They send a single `propose_actions_v1` call carrying only a task (create “Buy stamps”) or only a daily recurrence (explicit start date 2026-11-10), with no text deltas. Before the fix both failed with `kind:'incomplete'` (focused run: 2 failed, 16 passed), reproducing the defect offline. Each now expects `usage → actions → success`, the validated plan, and `['dispatch','settle']` accounting.
+
+**Fix:** the textless-completion guard now also accepts `plan.task` and `plan.recurrence`. No other change: same contract validation (`validateActions` still enforces explicit task/recurring intent, the start-date clarification, and exclusivity rules), same budget/settlement, orchestration, permissions and provider configuration. The existing “empty completed result is incomplete” test still passes, so empty output still fails.
+
+**Executed (cloud container, Node 24.22.1 from the preinstalled `/opt/node24`, pnpm 10.34.9, `pnpm install --frozen-lockfile`; this is not the user's machine, which has Node 24.14.1):** `JARVIS_MOCK_ONLY=1 pnpm lint` passed with zero warnings; `pnpm typecheck` passed; `pnpm test` **373 passed, 0 failed/skipped, 34 files, ~3.8s** (371 + two new cases). `next typegen` rewrote `next-env.d.ts` route-type paths as a generated side effect; that change was restored, not committed.
+
+**Not executed:** production build, the 109 DB-integration, 14 worker-process, 42 browser and nine HTTPS checks, and any live OpenAI request, so a real provider-emitted tool-only task/series response and its end-to-end review in Today/chat are still unverified. No Docker, database, migration, credential or private-configuration access occurred. The runtime blockers below are unchanged.
+
 ## Latest Auth/runtime failure evidence and focused repair — 2026-11-01, 12:55 IST
 
 **User-reported execution:** `local:audit` returns blocked at `local_runtime_status`, SQLSTATE null/category unavailable; `local:diagnose` again reports the existing 10-second Supabase status timeout. Website logs repeatedly show `AuthRetryableFetchError`, `fetch failed`, status **0**, no provider code. This establishes a transport/unreachable-service failure for those Auth requests, not a confirmed invalid password, profile/RLS rejection or executed migration failure. Docker engine health versus local Supabase/CLI responsiveness remains unresolved: no `docker info` result has been supplied. The `.env.local` file privately validates as expected loopback API port 54321/origin port 3000; this does not establish a running process's loaded environment or service health.

@@ -52,7 +52,7 @@ export async function* liveResponse(params:{client:SupabaseClient<Database>;requ
    }else if(['response.failed','response.incomplete','error'].includes(event.type))throw new LiveAIError('incomplete');
   }
   if(!completed)throw new Error('Interrupted provider stream.');
-  if(!text.trim()&&!plan.memory&&!plan.reminder&&!plan.clarification)throw new LiveAIError('incomplete');
+  if(!text.trim()&&!plan.memory&&!plan.reminder&&!plan.recurrence&&!plan.task&&!plan.clarification)throw new LiveAIError('incomplete');
   yield {type:'actions',plan};yield {type:'success'};
  }catch(error){
   if(error instanceof LiveAIError||params.signal.aborted)throw error;
