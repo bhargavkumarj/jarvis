@@ -1,3 +1,14 @@
+# Computer control v1 decisions — 2026-11-05
+
+- **Authorized:** the user's 2026-11-05 brief explicitly asks for the complete first computer-control milestone and feasible verification without stopping at a plan. Scope is five typed actions on the user's own Mac via Chrome; no remote/phone control, Safari/Firefox, sleeping/locked Mac, screenshots, file access or browser automation.
+- **Transport:** Chrome Native Messaging to a user-level host pinned to one extension ID; no localhost HTTP server or open port. One Swift process launched by Chrome; offline when disconnected. Minimums: macOS 13, Chrome 120.
+- **Interpretation:** deterministic alias-constrained parser on the server; no model call and no AI budget use, because the closed catalogue leaves a model nothing to add but cost and injection surface. Non-commands continue to the unchanged conversation flow; temporary chats refuse computer actions.
+- **Authority:** pairing (300 s, one use, bound to account+session+origin+extension, native approval) and command tickets (60 s, one use, bound to digest+device+issuing session) are checked atomically in SQL under a per-owner advisory lock; the companion's local policy and native approval remain authoritative. Shortcuts always ask; other items may be allowed locally per resource, off by default.
+- **Data:** only aliases/labels/spoken names/website hostnames leave the Mac; device secret in Keychain, server keeps SHA-256. History 30 days, exported, user-clearable; local journal metadata only. Account deletion, sign-out, revoke and disable block new control; running actions cannot be recalled instantly.
+- **Migration 004 defects** (three apply-time errors) are reported in STATUS with proposed fixes but **not edited**: it belongs to the Privacy Center milestone and needs explicit approval. Verification used a scratch-only patched copy.
+
+---
+
 # Personal-version finishing decisions — 2026-11-01
 
 - Latest user authorizes a bounded consistency/onboarding/source-verification pass. No Docker/DB/process/browser/HTTPS/live/device execution, deployment, paid calls, new processor or milestone acceptance. Existing budgets/consent remain unchanged.

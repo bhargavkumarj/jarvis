@@ -12,4 +12,5 @@ export default defineConfig([
   },
   globalIgnores([
   ".next/**", "next-env.d.ts", "playwright-report/**", "test-results/**", ".local/**",
+  "apps/jarvis-browser-bridge/dist/**", "apps/jarvis-mac-companion/.build/**",
 ])]);

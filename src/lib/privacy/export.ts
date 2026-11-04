@@ -10,7 +10,11 @@ export const EXPORT_FIELDS={
  reminders:['id','title','local_datetime','timezone','due_at','resolution','channel','state','version','task_id','series_id','series_version','occurrence_date','nominal_due_at','created_at','confirmed_at','scheduled_at','finished_at','cancel_requested_at'],
  delivery_history:['id','reminder_id','ordinal','state','started_at','send_started_at','finished_at','phone_observed','phone_observed_at'],
  usage:['id','purpose','model','budget_month','price_version','reserved_paise','charged_paise','state','created_at','dispatched_at','settled_at','input_tokens','output_tokens','cached_tokens','write30_tokens','write12_tokens','reasoning_tokens','audio_milliseconds','reported_audio_seconds'],
+ // Computer control: paired Macs and 30-day action history. No credentials, tickets or hashes.
+ computer_devices:['id','name','state','origin','enabled_actions','catalogue','created_at','last_seen_at','revoked_at'],
+ computer_actions:['id','device_id','source','actions','labels','state','created_at','authorized_at','claimed_at','finished_at','results','summary'],
 } as const;
+export const COMPUTER_EXPORT_CATEGORIES=['computer_devices','computer_actions'] as const;
 export type ExportCategory=keyof typeof EXPORT_FIELDS;
 export const EXPORT_LIMITS={page:100,rowsPerCategory:10000,totalRows:40000,bytes:32*1024*1024,milliseconds:120000};
 export function filterExport(category:ExportCategory,row:Record<string,unknown>){return Object.fromEntries(EXPORT_FIELDS[category].filter(k=>Object.hasOwn(row,k)).map(k=>[k,row[k]]));}
@@ -18,7 +22,7 @@ export type PageReader=(category:ExportCategory,after:string|null)=>Promise<Reco
 export async function* exportChunks(read:PageReader,at:string,account:{id:string;email?:string;created_at?:string},signal:AbortSignal,limits=EXPORT_LIMITS){
  const encoder=new TextEncoder();let bytes=0,total=0;const started=Date.now();
  const out=(s:string)=>{const b=encoder.encode(s);bytes+=b.length;if(bytes>limits.bytes)throw new Error('Export limit');return b;};
- yield out(JSON.stringify({schema_version:'jarvis-personal-export-v1',exported_at:at,account,consistency:'Keyset pages with a creation cutoff; not a transaction snapshot. Concurrent edits/deletes may be reflected. Privacy-generation changes abort the export.',included:'Owned preferences/consents, unexpired conversation history, memory lifecycle and available provenance, tasks, reminder schedules/delivery states and numerical usage.',excluded:'Passwords, session/capability tokens, API/notification/worker credentials, private security diagnostics, queue/outbox internals and operation hashes, raw audio, unsent temporary content, provider copies, developer mailbox/fixture files, logs and backups.'}).slice(0,-1)+',"data":{');
+ yield out(JSON.stringify({schema_version:'jarvis-personal-export-v1',exported_at:at,account,consistency:'Keyset pages with a creation cutoff; not a transaction snapshot. Concurrent edits/deletes may be reflected. Privacy-generation changes abort the export.',included:'Owned preferences/consents, unexpired conversation history, memory lifecycle and available provenance, tasks, reminder schedules/delivery states, numerical usage and computer-control devices/action history.',excluded:'Passwords, session/capability tokens, API/notification/worker/device credentials, computer-control tickets, Mac-local app paths/folder references/Shortcut lists/journals, private security diagnostics, queue/outbox internals and operation hashes, raw audio, unsent temporary content, provider copies, developer mailbox/fixture files, logs and backups.'}).slice(0,-1)+',"data":{');
  let firstCategory=true;
  for(const category of Object.keys(EXPORT_FIELDS) as ExportCategory[]){
   yield out(`${firstCategory?'':','}${JSON.stringify(category)}:[`);firstCategory=false;let first=true,cursor:string|null=null,count=0;

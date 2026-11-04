@@ -1,0 +1,977 @@
+{
+ "_comment": "Shared by tests/unit/computer-contracts.test.ts and apps/jarvis-mac-companion/Tests. Synthetic values only. Regenerate digests only with an intentional protocol version change.",
+ "digest": [
+  {
+   "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+   "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "actions": [
+    {
+     "type": "open_application",
+     "alias": "safari"
+    }
+   ],
+   "canonical": "jarvis-computer-control/v1\ndevice:3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90\ncommand:7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54\n0:open_application:safari",
+   "sha256": "8b929803cc1b8560b5ac89cafc3ce68e075d4b6916b7c07ad025d560787ae9e0"
+  },
+  {
+   "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+   "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "actions": [
+    {
+     "type": "open_application",
+     "alias": "vs-code"
+    },
+    {
+     "type": "set_volume",
+     "percent": 30
+    },
+    {
+     "type": "open_website",
+     "alias": "youtube"
+    },
+    {
+     "type": "open_folder",
+     "alias": "jarvis-project"
+    },
+    {
+     "type": "run_shortcut",
+     "alias": "study-setup"
+    }
+   ],
+   "canonical": "jarvis-computer-control/v1\ndevice:3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90\ncommand:7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54\n0:open_application:vs-code\n1:set_volume:30\n2:open_website:youtube\n3:open_folder:jarvis-project\n4:run_shortcut:study-setup",
+   "sha256": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+  },
+  {
+   "deviceId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "commandId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+   "actions": [
+    {
+     "type": "set_volume",
+     "percent": 0
+    }
+   ],
+   "canonical": "jarvis-computer-control/v1\ndevice:7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54\ncommand:3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90\n0:set_volume:0",
+   "sha256": "987e24587396393df58b3ae971f7754bfd42520507c619dd3b6cbd736ddb36cc"
+  },
+  {
+   "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+   "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "actions": [
+    {
+     "type": "set_volume",
+     "percent": 100
+    }
+   ],
+   "canonical": "jarvis-computer-control/v1\ndevice:3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90\ncommand:7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54\n0:set_volume:100",
+   "sha256": "ed73cef682933708f94c29430f4deca1c6500eb88c277f7ef4ff0dd177bbdf7e"
+  }
+ ],
+ "validActions": [
+  {
+   "type": "open_application",
+   "alias": "safari"
+  },
+  {
+   "type": "open_application",
+   "alias": "vs-code"
+  },
+  {
+   "type": "set_volume",
+   "percent": 30
+  },
+  {
+   "type": "open_website",
+   "alias": "youtube"
+  },
+  {
+   "type": "open_folder",
+   "alias": "jarvis-project"
+  },
+  {
+   "type": "run_shortcut",
+   "alias": "study-setup"
+  },
+  {
+   "type": "set_volume",
+   "percent": 0
+  },
+  {
+   "type": "set_volume",
+   "percent": 100
+  }
+ ],
+ "invalidActions": [
+  {
+   "value": {
+    "type": "execute_shell",
+    "command": "ls"
+   },
+   "code": "unknown_action"
+  },
+  {
+   "value": {
+    "type": "open_application",
+    "alias": "Safari"
+   },
+   "code": "invalid_alias"
+  },
+  {
+   "value": {
+    "type": "open_application",
+    "alias": "../etc"
+   },
+   "code": "invalid_alias"
+  },
+  {
+   "value": {
+    "type": "open_application",
+    "alias": "safari",
+    "path": "/Applications/Safari.app"
+   },
+   "code": "invalid_action"
+  },
+  {
+   "value": {
+    "type": "open_folder",
+    "alias": "/Users/me"
+   },
+   "code": "invalid_alias"
+  },
+  {
+   "value": {
+    "type": "set_volume",
+    "percent": 101
+   },
+   "code": "invalid_volume"
+  },
+  {
+   "value": {
+    "type": "set_volume",
+    "percent": -1
+   },
+   "code": "invalid_volume"
+  },
+  {
+   "value": {
+    "type": "set_volume",
+    "percent": 30.5
+   },
+   "code": "invalid_volume"
+  },
+  {
+   "value": {
+    "type": "set_volume",
+    "percent": "30"
+   },
+   "code": "invalid_volume"
+  },
+  {
+   "value": {
+    "type": "set_volume",
+    "delta": -10
+   },
+   "code": "invalid_action"
+  },
+  {
+   "value": {
+    "type": "run_shortcut",
+    "alias": "study-setup",
+    "input": "x"
+   },
+   "code": "invalid_action"
+  },
+  {
+   "value": {
+    "type": "open_website",
+    "alias": "-bad"
+   },
+   "code": "invalid_alias"
+  },
+  {
+   "value": [
+    "open_application"
+   ],
+   "code": "invalid_action"
+  }
+ ],
+ "validEnvelopes": [
+  {
+   "protocolVersion": 1,
+   "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+   "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+   "actions": [
+    {
+     "type": "open_application",
+     "alias": "vs-code"
+    },
+    {
+     "type": "set_volume",
+     "percent": 30
+    },
+    {
+     "type": "open_website",
+     "alias": "youtube"
+    },
+    {
+     "type": "open_folder",
+     "alias": "jarvis-project"
+    },
+    {
+     "type": "run_shortcut",
+     "alias": "study-setup"
+    }
+   ],
+   "issuedAt": "2026-11-05T10:00:00.000Z",
+   "expiresAt": "2026-11-05T10:01:00.000Z",
+   "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+  }
+ ],
+ "invalidEnvelopes": [
+  {
+   "value": {
+    "protocolVersion": 2,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+    "actions": [
+     {
+      "type": "open_application",
+      "alias": "vs-code"
+     },
+     {
+      "type": "set_volume",
+      "percent": 30
+     },
+     {
+      "type": "open_website",
+      "alias": "youtube"
+     },
+     {
+      "type": "open_folder",
+      "alias": "jarvis-project"
+     },
+     {
+      "type": "run_shortcut",
+      "alias": "study-setup"
+     }
+    ],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:01:00.000Z",
+    "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+   },
+   "code": "unsupported_version"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+    "actions": [
+     {
+      "type": "open_application",
+      "alias": "vs-code"
+     },
+     {
+      "type": "set_volume",
+      "percent": 30
+     },
+     {
+      "type": "open_website",
+      "alias": "youtube"
+     },
+     {
+      "type": "open_folder",
+      "alias": "jarvis-project"
+     },
+     {
+      "type": "run_shortcut",
+      "alias": "study-setup"
+     }
+    ],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:01:00.000Z",
+    "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc",
+    "owner_id": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f"
+   },
+   "code": "invalid_command"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+    "actions": [
+     {
+      "type": "open_application",
+      "alias": "vs-code"
+     },
+     {
+      "type": "set_volume",
+      "percent": 30
+     },
+     {
+      "type": "open_website",
+      "alias": "youtube"
+     },
+     {
+      "type": "open_folder",
+      "alias": "jarvis-project"
+     },
+     {
+      "type": "run_shortcut",
+      "alias": "study-setup"
+     },
+     {
+      "type": "open_application",
+      "alias": "safari"
+     }
+    ],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:01:00.000Z",
+    "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+   },
+   "code": "plan_too_long"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+    "actions": [],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:01:00.000Z",
+    "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+   },
+   "code": "invalid_plan"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "not-a-uuid",
+    "actions": [
+     {
+      "type": "open_application",
+      "alias": "vs-code"
+     },
+     {
+      "type": "set_volume",
+      "percent": 30
+     },
+     {
+      "type": "open_website",
+      "alias": "youtube"
+     },
+     {
+      "type": "open_folder",
+      "alias": "jarvis-project"
+     },
+     {
+      "type": "run_shortcut",
+      "alias": "study-setup"
+     }
+    ],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:01:00.000Z",
+    "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+   },
+   "code": "invalid_identifier"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+    "actions": [
+     {
+      "type": "open_application",
+      "alias": "vs-code"
+     },
+     {
+      "type": "set_volume",
+      "percent": 30
+     },
+     {
+      "type": "open_website",
+      "alias": "youtube"
+     },
+     {
+      "type": "open_folder",
+      "alias": "jarvis-project"
+     },
+     {
+      "type": "run_shortcut",
+      "alias": "study-setup"
+     }
+    ],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:00:00.000Z",
+    "digest": "519ecfe92bf75fc198520151e664391da908077d0a7f0a154fd3a503e22794bc"
+   },
+   "code": "invalid_time"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "requestId": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "deviceId": "3f0c1a52-8d4e-4b6a-9c1d-2e7f5a6b8c90",
+    "actions": [
+     {
+      "type": "open_application",
+      "alias": "vs-code"
+     },
+     {
+      "type": "set_volume",
+      "percent": 30
+     },
+     {
+      "type": "open_website",
+      "alias": "youtube"
+     },
+     {
+      "type": "open_folder",
+      "alias": "jarvis-project"
+     },
+     {
+      "type": "run_shortcut",
+      "alias": "study-setup"
+     }
+    ],
+    "issuedAt": "2026-11-05T10:00:00.000Z",
+    "expiresAt": "2026-11-05T10:01:00.000Z",
+    "digest": "ABC"
+   },
+   "code": "invalid_digest"
+  }
+ ],
+ "validResults": [
+  {
+   "protocolVersion": 1,
+   "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "state": "succeeded",
+   "results": [
+    {
+     "index": 0,
+     "type": "open_application",
+     "state": "succeeded",
+     "evidence": "observed",
+     "code": "app_running_observed",
+     "message": "Safari is running.",
+     "observedPercent": null,
+     "previousPercent": null,
+     "startedAt": "2026-11-05T10:00:01.000Z",
+     "finishedAt": "2026-11-05T10:00:02.000Z"
+    },
+    {
+     "index": 1,
+     "type": "set_volume",
+     "state": "succeeded",
+     "evidence": "observed",
+     "code": "volume_set",
+     "message": "Output volume reads 30%.",
+     "observedPercent": 30,
+     "previousPercent": 55,
+     "startedAt": "2026-11-05T10:00:02.000Z",
+     "finishedAt": "2026-11-05T10:00:02.100Z"
+    }
+   ],
+   "startedAt": "2026-11-05T10:00:01.000Z",
+   "finishedAt": "2026-11-05T10:00:02.100Z",
+   "summary": "2 of 2 actions completed."
+  },
+  {
+   "protocolVersion": 1,
+   "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+   "state": "outcome_unknown",
+   "results": [
+    {
+     "index": 0,
+     "type": "run_shortcut",
+     "state": "outcome_unknown",
+     "evidence": "none",
+     "code": "shortcut_timeout",
+     "message": "The Shortcut did not finish in 120 seconds; it was stopped. Steps it already ran are not reversed.",
+     "observedPercent": null,
+     "previousPercent": null,
+     "startedAt": "2026-11-05T10:00:01.000Z",
+     "finishedAt": "2026-11-05T10:00:02.000Z"
+    }
+   ],
+   "startedAt": "2026-11-05T10:00:01.000Z",
+   "finishedAt": "2026-11-05T10:00:02.100Z",
+   "summary": "Outcome unknown."
+  }
+ ],
+ "invalidResults": [
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "running",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     },
+     {
+      "index": 1,
+      "type": "set_volume",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "volume_set",
+      "message": "Output volume reads 30%.",
+      "observedPercent": 30,
+      "previousPercent": 55,
+      "startedAt": "2026-11-05T10:00:02.000Z",
+      "finishedAt": "2026-11-05T10:00:02.100Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_state"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "none",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_evidence"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 3,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_result"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "line\nbreak",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_message"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "skipped",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_evidence"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     },
+     {
+      "index": 1,
+      "type": "set_volume",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "volume_set",
+      "message": "Output volume reads 30%.",
+      "observedPercent": 300,
+      "previousPercent": 55,
+      "startedAt": "2026-11-05T10:00:02.000Z",
+      "finishedAt": "2026-11-05T10:00:02.100Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_volume"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     },
+     {
+      "index": 1,
+      "type": "set_volume",
+      "state": "failed",
+      "evidence": "none",
+      "code": "volume_unsupported",
+      "message": "Output volume reads 30%.",
+      "observedPercent": 30,
+      "previousPercent": 55,
+      "startedAt": "2026-11-05T10:00:02.000Z",
+      "finishedAt": "2026-11-05T10:00:02.100Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed."
+   },
+   "code": "invalid_state"
+  },
+  {
+   "value": {
+    "protocolVersion": 1,
+    "commandId": "7b2e9d41-5c3a-4f8b-a1e6-0d9c8b7a6f54",
+    "state": "succeeded",
+    "results": [
+     {
+      "index": 0,
+      "type": "open_application",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "app_running_observed",
+      "message": "Safari is running.",
+      "observedPercent": null,
+      "previousPercent": null,
+      "startedAt": "2026-11-05T10:00:01.000Z",
+      "finishedAt": "2026-11-05T10:00:02.000Z"
+     },
+     {
+      "index": 1,
+      "type": "set_volume",
+      "state": "succeeded",
+      "evidence": "observed",
+      "code": "volume_set",
+      "message": "Output volume reads 30%.",
+      "observedPercent": 30,
+      "previousPercent": 55,
+      "startedAt": "2026-11-05T10:00:02.000Z",
+      "finishedAt": "2026-11-05T10:00:02.100Z"
+     }
+    ],
+    "startedAt": "2026-11-05T10:00:01.000Z",
+    "finishedAt": "2026-11-05T10:00:02.100Z",
+    "summary": "2 of 2 actions completed.",
+    "stdout": "secret"
+   },
+   "code": "invalid_result"
+  }
+ ],
+ "validCatalogue": [
+  {
+   "kind": "application",
+   "alias": "vs-code",
+   "label": "Visual Studio Code",
+   "names": [
+    "vs code",
+    "vscode"
+   ],
+   "detail": null,
+   "auto": false
+  },
+  {
+   "kind": "website",
+   "alias": "youtube",
+   "label": "YouTube",
+   "names": [],
+   "detail": "www.youtube.com",
+   "auto": true
+  },
+  {
+   "kind": "folder",
+   "alias": "jarvis-project",
+   "label": "Jarvis project",
+   "names": [
+    "jarvis project",
+    "my project"
+   ],
+   "detail": null,
+   "auto": false
+  },
+  {
+   "kind": "shortcut",
+   "alias": "study-setup",
+   "label": "Study Setup",
+   "names": [
+    "study setup"
+   ],
+   "detail": null,
+   "auto": false
+  }
+ ],
+ "invalidCatalogue": [
+  {
+   "value": {
+    "kind": "application",
+    "alias": "vs-code",
+    "label": "Visual Studio Code",
+    "names": [
+     "vs code",
+     "vscode"
+    ],
+    "detail": "/Applications/Visual Studio Code.app",
+    "auto": false
+   },
+   "code": "invalid_detail"
+  },
+  {
+   "value": {
+    "kind": "website",
+    "alias": "youtube",
+    "label": "YouTube",
+    "names": [],
+    "detail": "https://www.youtube.com/",
+    "auto": true
+   },
+   "code": "invalid_detail"
+  },
+  {
+   "value": {
+    "kind": "shortcut",
+    "alias": "study-setup",
+    "label": "Study Setup",
+    "names": [],
+    "detail": null,
+    "auto": true
+   },
+   "code": "invalid_auto"
+  },
+  {
+   "value": {
+    "kind": "application",
+    "alias": "vs-code",
+    "label": "Visual Studio Code",
+    "names": [
+     "VS Code"
+    ],
+    "detail": null,
+    "auto": false
+   },
+   "code": "invalid_names"
+  },
+  {
+   "value": {
+    "kind": "application",
+    "alias": "vs-code",
+    "label": "",
+    "names": [
+     "vs code",
+     "vscode"
+    ],
+    "detail": null,
+    "auto": false
+   },
+   "code": "invalid_label"
+  },
+  {
+   "value": {
+    "kind": "process",
+    "alias": "vs-code",
+    "label": "Visual Studio Code",
+    "names": [
+     "vs code",
+     "vscode"
+    ],
+    "detail": null,
+    "auto": false
+   },
+   "code": "invalid_catalogue"
+  },
+  {
+   "value": {
+    "kind": "application",
+    "alias": "vs-code",
+    "label": "Visual Studio Code",
+    "names": [
+     "vs code",
+     "vscode"
+    ],
+    "detail": null,
+    "auto": false,
+    "bundle": "com.microsoft.VSCode"
+   },
+   "code": "invalid_catalogue"
+  }
+ ],
+ "websites": {
+  "valid": [
+   [
+    "https://www.youtube.com/",
+    "www.youtube.com"
+   ],
+   [
+    "https://example.com",
+    "example.com"
+   ],
+   [
+    "https://docs.example.org/path/to?q=1&r=two#top",
+    "docs.example.org"
+   ],
+   [
+    "https://example.com:8443/x",
+    "example.com"
+   ],
+   [
+    "https://xn--bcher-kva.example/",
+    "xn--bcher-kva.example"
+   ]
+  ],
+  "invalid": [
+   "http://www.youtube.com/",
+   "javascript:alert(1)",
+   "file:///etc/passwd",
+   "shortcuts://run-shortcut?name=x",
+   "https://user:pw@example.com/",
+   "https://Example.com/",
+   "https://example.com/a b",
+   "https://example.com/\"x",
+   "https://example.com:99999/",
+   "https:/example.com",
+   "https://-bad.example/",
+   "https://exa_mple.com/",
+   "https://example.com/\\\\evil",
+   "vscode://file/etc",
+   "https://"
+  ]
+ },
+ "frames": [
+  {
+   "name": "valid hello",
+   "hex": "100000007b2274797065223a2268656c6c6f227d",
+   "expect": "ok"
+  },
+  {
+   "name": "declared length over limit",
+   "hex": "01000100",
+   "expect": "too_large"
+  },
+  {
+   "name": "declared 4 GiB",
+   "hex": "ffffffff",
+   "expect": "too_large"
+  },
+  {
+   "name": "truncated header",
+   "hex": "0500",
+   "expect": "truncated"
+  },
+  {
+   "name": "truncated body",
+   "hex": "0a0000007b7d",
+   "expect": "truncated"
+  },
+  {
+   "name": "zero length",
+   "hex": "00000000",
+   "expect": "empty"
+  },
+  {
+   "name": "not json object",
+   "hex": "020000005b5d",
+   "expect": "invalid_json"
+  }
+ ]
+}

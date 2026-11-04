@@ -31,3 +31,8 @@ recordings/
 exports/
 jarvis-export-*.json
 *.export.json
+
+# Built development extension and Swift build products.
+apps/jarvis-browser-bridge/dist/
+apps/jarvis-mac-companion/.build/
+apps/jarvis-mac-companion/build/

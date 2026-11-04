@@ -48,7 +48,7 @@ try {
       has_function_privilege('postgres',p.oid,'EXECUTE') as operator_execute,
       has_function_privilege('jarvis_auth_guard',p.oid,'EXECUTE') as guard_execute
       from pg_proc p join pg_namespace n on n.oid=p.pronamespace join pg_roles r on r.oid=p.proowner
-      where n.nspname='private' or (n.nspname='public' and (p.proname='revoke_current_session' or p.proname like 'm2a_%_v1' or p.proname like 'm2b_%_v1' or p.proname like 'm2c_%_v1' or p.proname in ('reminder_series_v1','reminder_snooze_v1') or p.proname like 'voice_%_v1' or p.proname like 'task_%_v1' or p.proname like 'privacy_%_v1')) order by n.nspname,p.proname`;
+      where n.nspname='private' or (n.nspname='public' and (p.proname='revoke_current_session' or p.proname like 'm2a_%_v1' or p.proname like 'm2b_%_v1' or p.proname like 'm2c_%_v1' or p.proname in ('reminder_series_v1','reminder_snooze_v1') or p.proname like 'voice_%_v1' or p.proname like 'task_%_v1' or p.proname like 'privacy_%_v1' or p.proname like 'computer\\_%')) order by n.nspname,p.proname`;
     // Definitions inspected in memory: share hashes/match flags, never arbitrary bodies.
     report.functions = functions.map(({body, ...metadata}) => ({...metadata,
       bodySha256: createHash('sha256').update(body).digest('hex'),

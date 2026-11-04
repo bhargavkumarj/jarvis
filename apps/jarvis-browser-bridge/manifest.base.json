@@ -1,0 +1,10 @@
+{
+ "manifest_version": 3,
+ "name": "JARVIS Computer Bridge (development)",
+ "version": "0.1.0",
+ "description": "Relays reviewed JARVIS computer-action tickets from your JARVIS page to the paired Mac companion. Carries no credentials.",
+ "minimum_chrome_version": "120",
+ "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA19pzhtT+X1hBYp0klPbjasKHBMlCtKaD49z4zIdXXj2zdniblXziSaiX6jyNsm2/pXUT+Vk9UuqU4A9bAmiqbNQxHOQJcDNP+Jh+F0bwAhTZGfPfxUDCIXAbEr+71S/HPPP8a5fTFYyKzqzv5bt0dN6xmUzrKM+M/eLzPWey9PRivmezRtoFQgFk0LI9mBCMZRY+/FDibaYL3FYUdnwbXOCo7IShiMEJ+gJHhxigOGj7Inxf9w8v1JkaDGFftGbRlr15Fat09KUQ8mtLaLiNOt9swP85aPGEPtWyFrxY5CjqMiyDMmenXL/FwiNWbq6GzVdKIuTyk3MDt204Cp08OwIDAQAB",
+ "permissions": ["nativeMessaging"],
+ "background": { "service_worker": "js/apps/jarvis-browser-bridge/src/service-worker.js", "type": "module" }
+}
