@@ -8,6 +8,10 @@ import JarvisCompanionCore
 //   CompanionE2E pair    <state-dir> <origin> <extension-id> <pairing-id> <code>
 //   CompanionE2E execute <state-dir> <command-id> <ticket>
 //   CompanionE2E cancel-during-confirm <state-dir> <command-id> <ticket>
+//   CompanionE2E configure <state-dir> <origin> <extension-id>     (demo catalogue)
+//   CompanionE2E native-host <state-dir> <chrome-extension://id/>   (launched by Chrome; Linux demo)
+// native-host mode runs the companion's real framing loop + router + engine + HTTP client,
+// with a SIMULATED approval (auto "Run" after 1.5 s) and the record-only executor.
 final class FileSecrets: SecretStore {
     let url: URL
     init(_ dir: URL) { url = dir.appendingPathComponent("secret.json") }
@@ -17,12 +21,19 @@ final class FileSecrets: SecretStore {
     func delete(account: String) { var a = all(); a.removeValue(forKey: account); try? PrivateFile.write(JSONEncoder().encode(a), to: url) }
 }
 final class Approver: Confirmer {
-    var cancelInstead = false
-    func confirm(_ request: ConfirmationRequest, cancel: CancelToken) -> ConfirmationOutcome { if cancelInstead { cancel.cancel(); return .cancelled }; return .approved }
+    var cancelInstead = false, delay: TimeInterval = 0
+    func confirm(_ request: ConfirmationRequest, cancel: CancelToken) -> ConfirmationOutcome {
+        if cancelInstead { cancel.cancel(); return .cancelled }
+        let end = Date().addingTimeInterval(delay)
+        while Date() < end { if cancel.isCancelled { return .cancelled }; Thread.sleep(forTimeInterval: 0.05) }
+        return .approved
+    }
 }
 final class Recorder: ActionExecutor {
+    static var demo = false
     func perform(_ action: Action, entry: LocalEntry?, index: Int, cancel: CancelToken) -> ActionResult {
-        ActionResult(index: index, type: action.type, state: .succeeded, evidence: .dispatched, code: action.type == .setVolume ? .volumeSet : .appLaunched, message: "Test double: recorded, not executed.", startedAt: Date(), finishedAt: Date())
+        ActionResult(index: index, type: action.type, state: .succeeded, evidence: .dispatched, code: action.type == .setVolume ? .volumeSet : action.type == .openWebsite ? .urlDispatched : action.type == .openFolder ? .folderOpened : action.type == .runShortcut ? .shortcutCompleted : .appLaunched,
+                     message: Recorder.demo ? "Linux demo host: recorded only, nothing was executed on a Mac." : "Test double: recorded, not executed.", startedAt: Date(), finishedAt: Date())
     }
     func describe(_ action: Action, entry: LocalEntry?) -> ConfirmationStep { ConfirmationStep(title: action.type.label, detail: action.target) }
 }
@@ -44,10 +55,31 @@ if args[1] == "pair" {
     c.enabledActions = [.openApplication, .setVolume]
     try! store.save(c)
 }
+if args[1] == "configure" {
+    var c = CompanionConfig(backendOrigin: args[3], allowedExtensionId: args[4], deviceName: "Demo Mac (Linux test host)")
+    c.catalogue = [
+        LocalEntry(kind: .application, alias: "safari", label: "Safari", bundleId: "com.apple.Safari"),
+        LocalEntry(kind: .application, alias: "vs-code", label: "Visual Studio Code", names: ["vs code", "vscode"], bundleId: "com.microsoft.VSCode"),
+        LocalEntry(kind: .website, alias: "youtube", label: "YouTube", url: "https://www.youtube.com/"),
+        LocalEntry(kind: .folder, alias: "jarvis-project", label: "Jarvis project", names: ["jarvis project folder"], bookmark: Data([0]), folderPath: "/Users/demo/Projects/jarvis"),
+        LocalEntry(kind: .shortcut, alias: "study-setup", label: "Study Setup", shortcutName: "Study Setup", shortcutId: "00000000-0000-4000-8000-000000000000"),
+    ]
+    try! store.save(c); print("configured"); exit(0)
+}
 guard let config = try? store.load() else { print("{\"error\":\"no config\"}"); exit(1) }
 let secrets = FileSecrets(dir), approver = Approver()
 let backend = try! HTTPBackend(origin: config.backendOrigin)
 let engine = CommandEngine(hostVersion: "e2e", configStore: store, secrets: secrets, backend: backend, confirmer: approver, executor: Recorder(), journal: Journal(store: FileJournalStore(url: dir.appendingPathComponent("journal.json"))))
+if args[1] == "native-host" {
+    guard HostRouter.callerAllowed(args.count > 3 ? args[3] : nil, config: config) else { FileHandle.standardError.write(Data("caller not allowed\n".utf8)); exit(1) }
+    Recorder.demo = true; approver.delay = 1.5
+    let out = FrameWriter { FileHandle.standardOutput.write($0) }
+    let host = HostRouter(callerOrigin: args[3], engine: engine, configStore: store, secrets: secrets, backend: backend, ui: AutoUI(), writer: out)
+    engine.reconcile()
+    let reader = FrameReader(source: FileHandleSource(FileHandle.standardInput))
+    while let frame = try? reader.next() { host.handle(frame) }
+    host.drain(); exit(0)
+}
 var frames: [JSONValue] = []
 let lock = NSLock()
 let router = HostRouter(callerOrigin: "chrome-extension://\(config.allowedExtensionId)/", engine: engine, configStore: store, secrets: secrets, backend: backend, ui: AutoUI(),
