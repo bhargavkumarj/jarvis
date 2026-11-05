@@ -219,3 +219,15 @@ blockquote footer { color:var(--muted); font-size:12px; }
 .settings,.content-workspace,.memory-workspace { min-width:0; }
 .privacy-center :is(input:not([type=checkbox]),select),.snooze-controls :is(input,select) { width:100%; min-height:48px; padding:.65rem .8rem; border:1px solid var(--control); border-radius:6px; background:#fffdf9; color:var(--ink); font:inherit; }
 @media (max-width:767px) { .sidebar .wordmark { max-width:calc(100% - 95px); } .button { white-space:normal; overflow-wrap:anywhere; max-width:100%; } }
+
+/* Computer control: plain textual states, no decorative motion. */
+.computer-plan { border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin:12px 0; background:#fffdf9; }
+.computer-plan .computer-steps { margin:8px 0 4px; padding-left:1.6em; list-style:decimal; }
+.computer-plan .computer-steps li { margin:2px 0; overflow-wrap:anywhere; }
+.computer-disclosure ul { margin:6px 0 0; padding-left:1.3em; list-style:disc; }
+.computer-catalogue, .computer-devices, .computer-history { margin:6px 0 0 18px; padding:0; }
+.computer-devices li .button, .computer-devices li .button-row { margin-left:12px; }
+.computer-catalogue li, .computer-devices li, .computer-history li { margin:8px 0; overflow-wrap:anywhere; }
+.computer-catalogue li { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; }
+.settings-section h3 { font-size:1rem; font-weight:600; margin:6px 0 0; }
+.settings-section code { font-size:.9em; overflow-wrap:anywhere; }

@@ -16,6 +16,10 @@ A local workspace with authentication, owned preferences, retained/temporary con
 
 **2026-10-31 Privacy Center:** lint/typecheck, **334 unit/mocked cases** and production build pass. Database, browser, worker/finalizer, HTTPS, live and device checks remain deferred. Migration 202610310004 and earlier operator/recurrence/voice/task files are pending. M1/full M2 and prior feature acceptance remain open; manual SR/phone checks are Deferred—not tested and remote CI not run. See [STATUS](STATUS.md) and [MACHINE_HANDOFF](MACHINE_HANDOFF.md).
 
+## Computer control on your Mac (v1; Mac runtime unverified)
+
+Five approved actions only (open an approved app, website or folder; set an exact volume; run an approved Shortcut) through a Chrome extension and a native Mac companion, with native approval on the Mac. Off by default. See [COMPUTER_CONTROL.md](COMPUTER_CONTROL.md) and [MAC_COMPANION_SETUP.md](MAC_COMPANION_SETUP.md). Scripts: `pnpm bridge:build`, `pnpm bridge:check`, `pnpm companion:test`, `pnpm companion:e2e`.
+
 ## Privacy Center (source ready; runtime verification pending)
 
 In Settings choose separate cloud text, transcription and Pushover permissions. Turning AI off does not cancel reminders. Select 7/30/90/365 elapsed days for conversation history (30 default), with explicit warning before shortening. Expired history is unavailable immediately; the worker deletes it in bounded batches. Approved memories remain until you delete them; deleting a source removes its link, not the approved note.

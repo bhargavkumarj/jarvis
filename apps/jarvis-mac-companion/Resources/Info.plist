@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleIdentifier</key><string>com.jarvis.companion</string>
+  <key>CFBundleName</key><string>JARVIS Companion</string>
+  <key>CFBundleExecutable</key><string>jarvis-companion</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>0.1.0</string>
+  <key>CFBundleVersion</key><string>1</string>
+  <key>LSMinimumSystemVersion</key><string>13.0</string>
+  <!-- Menu-bar/accessory only: no Dock icon. The process exists only while Chrome holds the native-messaging port. -->
+  <key>LSUIElement</key><true/>
+  <key>NSHumanReadableCopyright</key><string>Personal development build. Not notarized.</string>
+</dict>
+</plist>

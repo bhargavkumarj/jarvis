@@ -2,6 +2,14 @@
 
 Prepared 2026-10-31; finishing update 2026-11-01. This is a local-development runbook, **not evidence that migration, restore or live acceptance passed**. Mocked runtime verification is now authorized, but the latest preflight below is blocked; live calls are outside this verification phase. Use synthetic data first; M1 and full M2 remain unaccepted. Current implementation/evidence: [STATUS](STATUS.md).
 
+## Computer control v1 — 2026-11-05 (source + Linux verification; Mac unverified)
+
+New: `packages/computer-control-contracts/`, `apps/jarvis-browser-bridge/`, `apps/jarvis-mac-companion/`, `src/lib/computer/`, `/api/v1/computer/*`, Settings → Computer, Assistant action card, migration **`202611050001_computer_control.sql`** (after 005). Read COMPUTER_CONTROL.md and MAC_COMPANION_SETUP.md.
+
+**Blocker first:** `202610310004_privacy_center.sql` fails to apply (SQLSTATE 42601 in `privacy_command_v1`, then two ownership/ACL permission errors). Fix and approve 004 before `pnpm db:migrate` on the laptop; the computer migration depends on 004/005. Do not mark versions applied by hand on a retained database.
+
+Then, on the Mac: `pnpm db:migrate` → `pnpm build && pnpm start` (or `pnpm dev --port 3000`) → `pnpm bridge:build` and Load unpacked → `cd apps/jarvis-mac-companion && ./scripts/install-dev.sh` → approve items → Settings → Computer → Turn on → Pair this Mac. Developer checks that need Docker: `pnpm companion:test` (Swift core in a container on non-Mac hosts), `pnpm bridge:check` (needs a Chrome that honours `--load-extension`, e.g. Chrome for Testing), `pnpm companion:e2e` (local Supabase + build + Docker). On a Mac, `pnpm companion:test` uses the local Swift toolchain. Never run unknown Shortcuts in tests.
+
 ## Latest runtime preflight — 2026-11-01 (existing laptop checkout)
 
 The context was restored and scripts inspected. **No database/runtime acceptance advanced.** Existing dependencies match all 27 exact manifest pins (Node 24.14.1/pnpm 10.34.9); no reinstall/extraction. Required config is present/local/publishable, values suppressed. Git remains untracked/no commits; an `origin` name is now present and was left unchanged. New user work and previous archives were preserved.

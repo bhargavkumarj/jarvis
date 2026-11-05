@@ -35,7 +35,11 @@
     "live:status": "node scripts/live-configure.mjs status",
     "live:pushover-test": "node scripts/pushover-test.mjs",
     "live:admit": "node scripts/live-admit.mjs",
-    "live:evaluate": "node scripts/live-evaluate.mjs"
+    "live:evaluate": "node scripts/live-evaluate.mjs",
+    "bridge:build": "node scripts/build-bridge.mjs",
+    "bridge:check": "node scripts/bridge-chrome-check.mjs",
+    "companion:test": "node scripts/companion-swift.mjs test",
+    "companion:e2e": "node scripts/companion-e2e.mjs"
   },
   "dependencies": {
     "@js-temporal/polyfill": "0.5.1",

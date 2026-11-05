@@ -1,0 +1,7 @@
+{
+  "name": "com.jarvis.companion",
+  "description": "JARVIS Mac companion (development)",
+  "path": "__HOST_PATH__",
+  "type": "stdio",
+  "allowed_origins": ["chrome-extension://__EXTENSION_ID__/"]
+}

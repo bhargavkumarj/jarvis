@@ -9,8 +9,8 @@ export default defineConfig({
   projects: [
     { name: "public-desktop", testMatch: "public.spec.ts", use: { viewport: { width: 1440, height: 1000 } } },
     { name: "public-mobile", testMatch: "public.spec.ts", use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
-    { name: "auth-desktop", testMatch: ["auth.spec.ts", "conversation.spec.ts", "reminders.spec.ts", "voice.spec.ts", "tasks.spec.ts", "privacy.spec.ts", "personal-version.spec.ts"], use: { viewport: { width: 1440, height: 1000 } } },
-    { name: "auth-mobile", testMatch: ["auth.spec.ts", "conversation.spec.ts", "reminders.spec.ts", "voice.spec.ts", "tasks.spec.ts", "privacy.spec.ts", "personal-version.spec.ts"], use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
+    { name: "auth-desktop", testMatch: ["auth.spec.ts", "conversation.spec.ts", "reminders.spec.ts", "voice.spec.ts", "tasks.spec.ts", "privacy.spec.ts", "personal-version.spec.ts", "computer.spec.ts"], use: { viewport: { width: 1440, height: 1000 } } },
+    { name: "auth-mobile", testMatch: ["auth.spec.ts", "conversation.spec.ts", "reminders.spec.ts", "voice.spec.ts", "tasks.spec.ts", "privacy.spec.ts", "personal-version.spec.ts", "computer.spec.ts"], use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
   ],
   webServer: {
     command: "node_modules/.bin/next start --hostname 127.0.0.1 --port 3100",

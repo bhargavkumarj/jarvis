@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "rootDir": "../..",
+    "outDir": "dist/js",
+    "rewriteRelativeImportExtensions": true,
+    "allowImportingTsExtensions": false,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["src/**/*.ts", "../../packages/computer-control-contracts/src/**/*.ts"]
+}

@@ -3,6 +3,7 @@
 // ai_requests intentionally omits ungranted settlement_hash/scope_id columns.
 // Recurrence/voice/tasks/privacy/onboarding additions below are provisional source
 // contracts, NOT regenerated database evidence. Run db:types after all migrations.
+// Computer-control (202611050001) tables/RPCs below are likewise provisional source contracts.
 import type { Conversation, Turn, Proposal, Memory } from "./conversation/types";
 import type { Reminder, ReminderOperation, DeliveryAttempt } from "./reminders/types";
 import type { ReminderSeries } from "./reminders/recurrence";
@@ -19,6 +20,9 @@ export type Database = {
   public: {
     Tables: {
       privacy_preferences: ContentTable<import("./privacy/model").PrivacyPreferences>;
+      computer_settings: ContentTable<{owner_id:string;enabled:boolean;consent_version:string|null;updated_at:string}>;
+      computer_devices: ContentTable<import("./computer/service").DeviceRow>;
+      computer_commands: ContentTable<{id:string;owner_id:string;device_id:string;request_id:string;source:'text'|'voice';actions:Json;labels:Json;digest:string;state:string;auto_eligible:boolean;created_at:string;proposal_expires_at:string;authorized_at:string|null;ticket_expires_at:string|null;claimed_at:string|null;finished_at:string|null;cancel_requested_at:string|null;results:Json;summary:string|null}>;
       tasks: ContentTable<Task>;
       task_operations: ContentTable<TaskOperation>;
       voice_preferences: ContentTable<{owner_id:string;cloud_transcription:boolean;consent_version:string|null;updated_at:string}>;
@@ -42,6 +46,21 @@ export type Database = {
     Views: { [_ in never]: never };
     Functions: {
       privacy_action_v1: {Args:{p_kind:string;p_action:string;p_request:string;p_conversation:string;p_data:Json};Returns:Json};
+      computer_settings_v1: {Args:{p_enabled?:boolean|null;p_consent?:string|null};Returns:Json};
+      computer_pairing_begin_v1: {Args:{p_id:string;p_code_hash:string;p_extension:string;p_origin:string};Returns:Json};
+      computer_propose_v1: {Args:{p_command:string;p_request:string;p_device:string;p_source:string;p_actions:Json;p_labels:Json;p_digest:string;p_auto:boolean};Returns:Json};
+      computer_authorize_v1: {Args:{p_command:string;p_digest:string;p_ticket_hash:string};Returns:Json};
+      computer_cancel_v1: {Args:{p_command:string};Returns:Json};
+      computer_device_v1: {Args:{p_action:string;p_device:string};Returns:Json};
+      computer_history_clear_v1: {Args:Record<string,never>;Returns:Json};
+      computer_export_v1: {Args:{p_category:string;p_after?:string|null;p_at?:string;p_epoch?:number};Returns:Json};
+      computer_pairing_inspect_v1: {Args:{p_pairing:string;p_code:string;p_extension:string};Returns:Json};
+      computer_pairing_complete_v1: {Args:{p_pairing:string;p_code:string;p_extension:string;p_name:string;p_credential_hash:string};Returns:Json};
+      computer_device_sync_v1: {Args:{p_device:string;p_secret:string;p_sync:Json};Returns:Json};
+      computer_redeem_v1: {Args:{p_device:string;p_secret:string;p_command:string;p_ticket:string};Returns:Json};
+      computer_progress_v1: {Args:{p_device:string;p_secret:string;p_command:string;p_state:string;p_index:number};Returns:Json};
+      computer_finish_v1: {Args:{p_device:string;p_secret:string;p_command:string;p_result:Json};Returns:Json};
+      computer_device_unpair_v1: {Args:{p_device:string;p_secret:string};Returns:Json};
       privacy_get_v1: {Args:Record<string,never>;Returns:Json};
       privacy_reauth_check_v1: {Args:Record<string,never>;Returns:undefined};
       privacy_command_v1: {Args:{p_action:string;p_request:string;p_data:Json};Returns:Json};

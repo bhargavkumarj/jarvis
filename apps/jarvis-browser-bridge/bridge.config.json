@@ -1,0 +1,4 @@
+{
+ "_comment": "Exact JARVIS page origins allowed to talk to the bridge. Ports are enforced here because Chrome match patterns cannot express them. Production must be https://; loopback http is development only.",
+ "allowedOrigins": ["http://127.0.0.1:3000"]
+}
